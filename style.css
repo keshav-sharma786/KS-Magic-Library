@@ -1,0 +1,141 @@
+body {
+  background-color: #141c3a !important;
+  /* background-color: #092215 !important; */
+  /* background-color: #300049 !important; */
+  background-color: rgb(1 52 55) !important;
+  /* background-color: #212529 !important; */
+  /* background-color: #06170e !important; */
+  /* background-color: #A62C2C !important; */
+  /* background-color: #220135 !important; */
+}
+
+
+.main-heading {
+  /* margin-left: 10rem !important; */
+  font-weight: 600;
+  color: aliceblue;
+}
+
+.navbar {
+  background-color: black !important;
+  color: wheat !important;
+}
+
+#exampleFormControlInput1 {
+  width: 97% !important;
+}
+
+#exampleFormControlTextarea1 {
+  width: 97% !important;
+}
+
+#formFileLg {
+  width: 94% !important;
+}
+
+.second-heading {
+  font-weight: 600;
+  color: aliceblue;
+}
+
+.table {
+  width: 94% !important;
+  background-color: #212529 !important;
+}
+
+tr {
+  line-height: 200px !important;
+}
+
+.glitter {
+  color: #fff;
+  background: #262626;
+  position: relative;
+}
+
+.glitter::after,
+.glitter::before {
+  content: "";
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  background: linear-gradient(
+    45deg,
+    #fb0094,
+    #0000ff,
+    #00ff00,
+    #ffff00,
+    #ff0000,
+    #fb0094,
+    #0000ff,
+    #00ff00,
+    #ffff00,
+    #ff0000
+  );
+  background-size: 400%;
+  position: absolute;
+  top: -2px;
+  border-radius: 5px;
+  left: -2px;
+  z-index: -1;
+  animation: animated-shadow 10s linear infinite alternate;
+}
+
+.glitter::after {
+  filter: blur(30px);
+}
+
+@keyframes animated-shadow {
+  0% {
+    background-position: 0 0;
+  }
+
+  50% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.required-file::after {
+  content: "*";
+  color: red;
+}
+
+.custom-upload {
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  border: 2px dashed #ccc;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+#imagePreview {
+  width: 300px;
+  height: 300px;
+  min-height: 300px;
+  min-width: 300px;
+}
+
+.image {
+  height: 100px;
+  width: 100px;
+  /* margin-left: 5rem; */
+  border: 3px solid brown !important;
+  box-shadow: 0 0 8px greenyellow !important;
+}
+
+input[type="text"] {
+  border: 5px solid brown !important;
+  box-shadow: 0 0 10px greenyellow !important;
+}
+
+textarea {
+  border: 5px solid brown !important;
+  box-shadow: 0 0 10px greenyellow !important;
+}
+

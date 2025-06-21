@@ -1,0 +1,376 @@
+// first of all selecting all the input fields
+const nameInput = document.querySelector(".name");
+const author = document.querySelector(".author");
+const description = document.querySelector(".description");
+const imageUpload = document.querySelector(".image-upload");
+
+const addBook = document.querySelector(".add-book");
+
+const defaultImage = document.querySelector("#imagePreview");
+
+const allInputFields = document.querySelectorAll(".form-control");
+const radioBtns = document.querySelectorAll(".form-check-input");
+const table = document.querySelector(".table");
+const tableBody = document.querySelector(".table-body");
+
+// making objects of all input fields
+// so that we can store it in the local storage
+const inputArr = [
+  // {
+  //   nameInput: "",
+  //   author: "",
+  //   description: "",
+  //   image: "",
+  //   type: "",
+  // },
+];
+// also when page reloads we also have to retrieve the data from the local storage
+const retrieveInputArr = localStorage.getItem("bookInfo");
+console.log(retrieveInputArr);
+// now we have to parse it as well
+if (retrieveInputArr != null) {
+  const inputArrParsed = JSON.parse(retrieveInputArr);
+  // i have gotten an array of object
+  console.log(inputArrParsed);
+  // now i have to set the input fields so that they remain on the page even if the page is refreshed or the page is being opened in a new tab
+  // i will apply for of loop on the inputArrParsed
+  inputArrParsed.map((element, index, arr) => {
+    const tableRow = document.createElement("tr");
+    // creating the cells
+    const c1 = document.createElement("td");
+    const c2 = document.createElement("td");
+    const c3 = document.createElement("td");
+    const c4 = document.createElement("td");
+    const c5 = document.createElement("td");
+    const c6 = document.createElement("td");
+    const deleteBtn = document.createElement("button");
+    deleteBtn.innerText = "delete";
+    deleteBtn.setAttribute("class", "btn btn-danger");
+    console.dir(deleteBtn);
+    c6.appendChild(deleteBtn);
+    deleteBtn.addEventListener("click", (e) => {
+      // console.log('delete button pressed');
+      // now when the delete button is being pressed we basically have to delete that row
+      console.dir(deleteBtn);
+      const td = deleteBtn.parentElement;
+      const tr = td.parentElement;
+      // finally remove that particular row
+      tr.remove();
+      console.log(element);
+      inputArrParsed.splice(index, 1);
+      console.log(inputArrParsed);
+      // setting into localstorage as well
+      // first stringify it
+      const inputArrStringified = JSON.stringify(inputArrParsed);
+      localStorage.setItem(
+        // key
+        "bookInfo",
+        inputArrStringified
+      );
+    });
+    const image = document.createElement("img");
+    image.src = `${element.image}`;
+    // inputArrParse is an object
+    c1.innerText = element.nameInput;
+    c2.innerText = element.author;
+    c3.innerText = element.description;
+    c4.innerText = element.type;
+    image.classList.add("image");
+    c5.appendChild(image);
+    tableRow.appendChild(c1);
+    tableRow.appendChild(c2);
+    tableRow.appendChild(c3);
+    tableRow.appendChild(c4);
+    tableRow.appendChild(c5);
+    tableRow.appendChild(c6);
+    // append tableRow to the table body
+
+    tableBody.appendChild(tableRow);
+  });
+}
+//   const tableRow = document.createElement("tr");
+//   // creating the cells
+//   const c1 = document.createElement("td");
+//   const c2 = document.createElement("td");
+//   const c3 = document.createElement("td");
+//   const c4 = document.createElement("td");
+//   const c5 = document.createElement("td");
+//   const c6 = document.createElement("td");
+//   const deleteBtn = document.createElement("button");
+//   deleteBtn.innerText = "delete";
+//   deleteBtn.setAttribute("class", "btn btn-danger");
+//   console.dir(deleteBtn);
+//   c6.appendChild(deleteBtn);
+//   deleteBtn.addEventListener("click", (e) => {
+//     // console.log('delete button pressed');
+//     // now when the delete button is being pressed we basically have to delete that row
+//     console.dir(deleteBtn);
+//     const td = deleteBtn.parentElement;
+//     const tr = td.parentElement;
+//     // finally remove that particular row
+//     tr.remove();
+//     console.log(inputArrParse);
+//     inputArrParsed.splice(inputArr, 1);
+//   });
+//   const image = document.createElement("img");
+//   image.src = `${inputArrParse.image}`;
+//   // inputArrParse is an object
+//   c1.innerText = inputArrParse.nameInput;
+//   c2.innerText = inputArrParse.author;
+//   c3.innerText = inputArrParse.description;
+//   c4.innerText = inputArrParse.type;
+//   image.classList.add("image");
+//   c5.appendChild(image);
+//   tableRow.appendChild(c1);
+//   tableRow.appendChild(c2);
+//   tableRow.appendChild(c3);
+//   tableRow.appendChild(c4);
+//   tableRow.appendChild(c5);
+//   tableRow.appendChild(c6);
+//   // append tableRow to the table body
+
+//   tableBody.appendChild(tableRow);
+// }
+
+// making the check function
+const check = () => {
+  // first of all converting the nodeList into the array
+  // very good keshav paaji this feature is being successfully filled up by you
+  const myInputFields = Array.from(allInputFields);
+  // now this time I will use the map function to check weather all the necessary input fields are being filled by the user or not
+  const myNewInputFields = myInputFields.map((el, index, array) => {
+    console.log(el.value);
+    el = el.value;
+    return el;
+  });
+  // return statement
+  return myNewInputFields;
+};
+
+// emptyInputFields function
+const emptyInputFields = () => {
+  for (const allInputField of allInputFields) {
+    allInputField.value = "";
+  }
+  // empty the image that is in the file input field
+  defaultImage.src = "http://127.0.0.1:5500/";
+};
+
+const insertTableRow = () => {
+  const tableRow = document.createElement("tr");
+  // creating the cells
+  const c1 = document.createElement("td");
+  const c2 = document.createElement("td");
+  const c3 = document.createElement("td");
+  const c4 = document.createElement("td");
+  const c5 = document.createElement("td");
+  const c6 = document.createElement("td");
+  const deleteBtn = document.createElement("button");
+  deleteBtn.innerText = "delete";
+  deleteBtn.setAttribute("class", "btn btn-danger");
+  console.dir(deleteBtn);
+  c6.appendChild(deleteBtn);
+  deleteBtn.addEventListener("click", (e) => {
+    // console.log('delete button pressed');
+    // now when the delete button is being pressed we basically have to delete that row
+    const retrieveInputArr = localStorage.getItem("bookInfo");
+    console.log(retrieveInputArr);
+    // now i have to parse this retrieved input array
+    const inputArrParsed = JSON.parse(retrieveInputArr);
+    console.dir(deleteBtn);
+    const td = deleteBtn.parentElement;
+    const tr = td.parentElement;
+    // finally remove that particular row
+    tr.remove();
+    inputArrParsed.map((element, index, arr) => {
+      inputArrParsed.splice(index, 1);
+      // again to stringify
+      const inputArrStringified = JSON.stringify(inputArrParsed);
+      localStorage.setItem("bookInfo", inputArrStringified);
+    });
+  });
+  // creating an image element as well
+  const image = document.createElement("img");
+  // first of all we check that which radio button was checked by the user
+  // so for this i am going to use the for of loop
+  for (const radioBtn of radioBtns) {
+    if (radioBtn.checked) {
+      // means that radio btn is checked by the user
+      // we have to access it's sibling now
+      c4.innerText = radioBtn.nextElementSibling.innerText;
+
+      break;
+    }
+  }
+  // finally the time has come to set the image as well
+  // first we set a default image if no image has been selected by the user
+  // but if user selects any image then we 'll simply update the src of the image with the src of the image of the user
+
+  // inserting data into the cells
+  c1.innerText = nameInput.value;
+  c2.innerText = author.value;
+  c3.innerText = description.value;
+
+  if (
+    defaultImage.src === "http://127.0.0.1:5500/" ||
+    defaultImage.src === "http://127.0.0.1:5500/index.html"
+  ) {
+    // means user has not selected any
+    // append the default image to the column
+    image.src = "http://127.0.0.1:5500/default.webp";
+    image.classList.add("image");
+    c5.appendChild(image);
+  } else {
+    // user has selected some image
+    // updating the src of the image
+    image.src = defaultImage.src;
+    image.classList.add("image");
+    c5.appendChild(image);
+  }
+  // Append cells to row
+  tableRow.appendChild(c1);
+  tableRow.appendChild(c2);
+  tableRow.appendChild(c3);
+  tableRow.appendChild(c4);
+  tableRow.appendChild(c5);
+  tableRow.appendChild(c6);
+  // append tableRow to the table body
+
+  tableBody.appendChild(tableRow);
+
+  //now to store the object in inputArr
+  const inputObj = {
+    nameInput: `${nameInput.value}`,
+    author: `${author.value}`,
+    description: `${description.value}`,
+    image: `${image.src}`,
+    type: `${c4.innerText}`,
+  };
+  console.log(inputObj);
+  // pushing this object into the array
+  inputArr.push(inputObj);
+  console.log(inputArr);
+  // now to store this inputArr into local storage we have to convert it into a string
+  const inputArrStringified = JSON.stringify(inputArr);
+  // after converting it into a string we'll set it into the localstorage
+  // it is successfully get into the local storage as well
+  localStorage.setItem(
+    // key
+    "bookInfo",
+    inputArrStringified
+  );
+  //after the row has been inserted we have to empty the input fields completely
+  //we'll implement a function for doing this
+  //emptyInputFields();
+  emptyInputFields();
+};
+
+addBook.addEventListener("click", (e) => {
+  console.log("add-book btn pressed");
+  // now at first we check that weather user has filled all the input fields or not
+  // calling check function
+  // const myInputFields = Array.from(allInputFields);
+  // console.log(myInputFields);
+  const myNewInputFields = check();
+  console.log(myNewInputFields);
+  let flag = false;
+  for (const inputField of myNewInputFields) {
+    if (inputField) {
+      // truthy value
+      // which means all input fields are being filled up by the user
+      flag = true;
+    } else {
+      flag = false;
+      alert("please fill out all input fields");
+      break;
+    }
+  }
+  //   console.log('all input fields filled');
+  // it means all the input fields are being successfully filled up by the user
+  // first of all we empty all the inputfields
+  //   for (const allInputField of allInputFields) {
+  //     allInputField.value = "";
+  //   }
+  // so now the next major task is that whatever the input the user has written,we have to append those in our table below
+  // we'll create a new table row element
+  // so we'll create a function for inplementing this feature
+  // calling insertRow() function
+  if (flag) insertTableRow();
+});
+
+// let us build the delete function for deleting bookts
+// if (deleteBtn) {
+//   deleteBtn.addEventListener("click", (e) => {
+//     console.log("delete button pressed");
+//   });
+// }
+
+// now finally the time has come to implement the local storage
+
+function main() {
+  const fileUploadElement = document.getElementById("fileUpload");
+  const chosenFileElement = document.getElementById("chosen-file");
+  const customUploadLabel = document.querySelector(".custom-upload");
+  const imagePreview = document.getElementById("imagePreview");
+
+  fileUploadElement.addEventListener("change", function () {
+    displayImage(this.files[0]);
+  });
+
+  // Prevent default drag behaviors
+  ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+    customUploadLabel.addEventListener(eventName, preventDefaults, false);
+    document.body.addEventListener(eventName, preventDefaults, false);
+  });
+
+  // Highlight drop area when item is dragged over it
+  ["dragenter", "dragover"].forEach((eventName) => {
+    customUploadLabel.addEventListener(eventName, highlight, false);
+  });
+
+  ["dragleave", "drop"].forEach((eventName) => {
+    customUploadLabel.addEventListener(eventName, unhighlight, false);
+  });
+
+  // Handle dropped files
+  customUploadLabel.addEventListener("drop", handleDrop, false);
+
+  function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  function highlight(e) {
+    customUploadLabel.style.borderColor = "#666"; // Change as necessary
+  }
+
+  function unhighlight(e) {
+    customUploadLabel.style.borderColor = "#ccc";
+  }
+
+  function handleDrop(e) {
+    var dt = e.dataTransfer;
+    var files = dt.files;
+
+    if (files.length) {
+      fileUploadElement.files = files;
+      displayImage(files[0]);
+    }
+  }
+
+  function displayImage(file) {
+    if (file && file.type.startsWith("image/")) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        imagePreview.src = e.target.result;
+        imagePreview.style.display = "block";
+        chosenFileElement.textContent = file.name;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      chosenFileElement.textContent = "No file chosen";
+      imagePreview.style.display = "none";
+    }
+  }
+}
+main();
