@@ -197,8 +197,11 @@ const insertTableRow = () => {
   c2.innerText = author.value;
   c3.innerText = description.value;
 
-  if (!defaultImage.src || defaultImage.src.endsWith("/index.html")) 
- {
+  if (
+    defaultImage.src === "http://127.0.0.1:5500/" ||
+    defaultImage.src === "http://127.0.0.1:5500/index.html" ||
+    defaultImage.src === "https://ks-magic-library.netlify.app/"
+  ) {
     // means user has not selected any
     // append the default image to the column
     image.src = "http://ks-magic-library.netlify.app/default.webp";
@@ -225,7 +228,7 @@ const insertTableRow = () => {
   if (!count) {
     // means count here is undefined
     console.dir(tableRow.previousElementSibling.children[0].innerText);
-    const previous = tableRow.previousElementSibling.children[0].innerText; //1
+    const previous= tableRow.previousElementSibling.children[0].innerText;//1
     c0.innerText = `${parseInt(previous) + 1}`;
     // // error jaan bhuj ke
     // console.log(keshav);
