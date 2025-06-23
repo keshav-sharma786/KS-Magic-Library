@@ -197,13 +197,11 @@ const insertTableRow = () => {
   c2.innerText = author.value;
   c3.innerText = description.value;
 
-  if (
-    defaultImage.src === "http://127.0.0.1:5500/" ||
-    defaultImage.src === "http://127.0.0.1:5500/index.html"
-  ) {
+  if (!defaultImage.src || defaultImage.src.endsWith("/index.html")) 
+ {
     // means user has not selected any
     // append the default image to the column
-    image.src = "http://127.0.0.1:5500/default.webp";
+    image.src = "http://KS-Magic-Library/default.webp";
     image.classList.add("image");
     c5.appendChild(image);
   } else {
