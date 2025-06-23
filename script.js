@@ -15,7 +15,7 @@ const table = document.querySelector(".table");
 const tableBody = document.querySelector(".table-body");
 
 // also when page reloads we also have to retrieve the data from the local storage
-// so, basically local storage functionality we'll implement tomorrow, so Keshav paaji Good night for today!!!!!!
+
 // so first of all we need to check is there any data stored in the local storage previously, so first of all we need to fetch the data from the local storage
 // so our key name is book info
 // const storedBookDataInStorage = localStorage.getItem("bookInfo");
@@ -81,7 +81,7 @@ if (inputFieldsArr.length != 0) {
 // making the check function
 const check = () => {
   // first of all converting the nodeList into the array
-  // very good keshav paaji this feature is being successfully filled up by you
+  
   const myInputFields = Array.from(allInputFields);
   // now this time I will use the map function to check weather all the necessary input fields are being filled by the user or not
   const myNewInputFields = myInputFields.map((el, index, array) => {
