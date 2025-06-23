@@ -24,8 +24,12 @@ const tableBody = document.querySelector(".table-body");
 // now we'll make an empty inputFields array,we'll set that array of objects inside our local storage
 // problem is that when the page gets refreshed inputFieldsArr is always empty deleting the previous stored values in the localstorage
 let inputFieldsArr = JSON.parse(localStorage.getItem("bookInfo") || "[]");
+let count;
 
-let count = inputFieldsArr.length + 1;
+if (inputFieldsArr.length === 0) {
+  // serial no. will start from 1.
+  count = inputFieldsArr.length + 1;
+}
 // showing data from localStorage to our UI
 if (inputFieldsArr.length != 0) {
   // which means there are already some piece of data present in the local storage
@@ -137,7 +141,7 @@ const deleteRow = (deleteBtn, inputFieldsArr) => {
   // count = inputFieldsArr.length + 1;
   // count = (inputFieldsArr + 1);
   // console.log(count);
-  if(inputFieldsArr.length === 0) {
+  if (inputFieldsArr.length === 0) {
     // it means all the bookinfo is deleted
     // reset the count
     count = inputFieldsArr.length + 1;
@@ -188,7 +192,7 @@ const insertTableRow = () => {
   // but if user selects any image then we 'll simply update the src of the image with the src of the image of the user
 
   // inserting data into the cells
-  c0.innerText = count;
+
   c1.innerText = nameInput.value;
   c2.innerText = author.value;
   c3.innerText = description.value;
@@ -220,18 +224,27 @@ const insertTableRow = () => {
   // append tableRow to the table body
 
   tableBody.appendChild(tableRow);
-
+  if (!count) {
+    // means count here is undefined
+    console.dir(tableRow.previousElementSibling.children[0].innerText);
+    const previous = tableRow.previousElementSibling.children[0].innerText; //1
+    c0.innerText = `${parseInt(previous) + 1}`;
+    // // error jaan bhuj ke
+    // console.log(keshav);
+  } else {
+    c0.innerText = `${count}`;
+  }
   // ok after inserting the data we have to insert that data in the local storage as well
 
   const inputFieldsObj = {
-    sno: `${count}`,
+    sno: `${c0.innerText}`,
     name: `${nameInput.value}`,
     author: `${author.value}`,
     description: `${description.value}`,
     type: `${c4.innerText}`,
     image: `${image.src}`,
   };
-  count++;
+
   // console.log(inputFieldsObj);
   // after we have got the object of inputFields filled up by the user, in those input fields user has basically fillled by their favourite book description
   // so now it is time to push that object into our inputFieldsArr
@@ -243,6 +256,8 @@ const insertTableRow = () => {
   //after the row has been inserted we have to empty the input fields completely
   //we'll implement a function for doing this
   //emptyInputFields();
+  // increment the count as it is
+  count++;
   emptyInputFields();
 };
 
