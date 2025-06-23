@@ -201,7 +201,7 @@ const insertTableRow = () => {
  {
     // means user has not selected any
     // append the default image to the column
-    image.src = "http://KS-Magic-Library/default.webp";
+    image.src = "http://ks-magic-library.netlify.app/default.webp";
     image.classList.add("image");
     c5.appendChild(image);
   } else {
