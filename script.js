@@ -1,5 +1,6 @@
 // first of all selecting all the input fields
 const nameInput = document.querySelector(".name");
+
 const author = document.querySelector(".author");
 const description = document.querySelector(".description");
 const imageUpload = document.querySelector(".image-upload");
@@ -22,9 +23,56 @@ const tableBody = document.querySelector(".table-body");
 // console.log(storedBookDataInStorage);
 // now we'll make an empty inputFields array,we'll set that array of objects inside our local storage
 // problem is that when the page gets refreshed inputFieldsArr is always empty deleting the previous stored values in the localstorage
-let inputFieldsArr = JSON.parse(localStorage.getItem('bookInfo') || '[]');
+let inputFieldsArr = JSON.parse(localStorage.getItem("bookInfo") || "[]");
 
+let count = inputFieldsArr.length + 1;
+// showing data from localStorage to our UI
+if (inputFieldsArr.length != 0) {
+  // which means there are already some piece of data present in the local storage
+  // console.log(inputFieldsArr);
+  // applying for of loop
+  for (const inputFieldsObj of inputFieldsArr) {
+    const tableRow = document.createElement("tr");
+    // creating the cells
+    const c0 = document.createElement("td");
+    const c1 = document.createElement("td");
+    const c2 = document.createElement("td");
+    const c3 = document.createElement("td");
+    const c4 = document.createElement("td");
+    const c5 = document.createElement("td");
+    const c6 = document.createElement("td");
+    const deleteBtn = document.createElement("button");
+    deleteBtn.innerText = "delete";
+    deleteBtn.setAttribute("class", "btn btn-danger");
+    // console.dir(deleteBtn);
+    c6.appendChild(deleteBtn);
+    deleteBtn.addEventListener("click", (e) => {
+      // console.log("delete btn pressed");
+      // calling the deleteRow function
+      deleteRow(deleteBtn, inputFieldsArr);
+    });
+    // creating the imageElement as well
+    const image = document.createElement("img");
+    c0.innerText = `${inputFieldsObj.sno}`;
+    c1.innerText = `${inputFieldsObj.name}`;
+    c2.innerText = `${inputFieldsObj.author}`;
+    c3.innerText = `${inputFieldsObj.description}`;
+    c4.innerText = `${inputFieldsObj.type}`;
+    image.src = `${inputFieldsObj.image}`;
+    image.classList.add("image");
+    c5.appendChild(image);
+    tableRow.appendChild(c0);
+    tableRow.appendChild(c1);
+    tableRow.appendChild(c2);
+    tableRow.appendChild(c3);
+    tableRow.appendChild(c4);
+    tableRow.appendChild(c5);
+    tableRow.appendChild(c6);
+    // append tableRow to the table body
 
+    tableBody.appendChild(tableRow);
+  }
+}
 
 // making the check function
 const check = () => {
@@ -33,7 +81,7 @@ const check = () => {
   const myInputFields = Array.from(allInputFields);
   // now this time I will use the map function to check weather all the necessary input fields are being filled by the user or not
   const myNewInputFields = myInputFields.map((el, index, array) => {
-    console.log(el.value);
+    // console.log(el.value);
     el = el.value;
     return el;
   });
@@ -50,40 +98,56 @@ const emptyInputFields = () => {
   defaultImage.src = "http://127.0.0.1:5500/";
 };
 
-const deleteRow = (deleteBtn) => {
+const deleteRow = (deleteBtn, inputFieldsArr) => {
+  // debugger
   // console.log('delete button pressed');
   // now when the delete button is being pressed we basically have to delete that row
   // now we'll make a separate function to implement the delete functionality
-  
-  console.dir(deleteBtn);
+
+  // console.dir(deleteBtn);
+  // console.log(inputFieldsArr);
   const td = deleteBtn.parentElement;
   const tr = td.parentElement;
+  // console.dir(tr);
+  // console.log(tr.innerHTML);
   // finally remove that particular row
   tr.remove();
+
   // now after the deleting the row from our UI,we have to delete that particular object from our local storage as well
   // so for deleting the data from local storage from inputFieldsArr, first of all we have to get data from local storage,
-  const storedBookDataInStorage = localStorage.getItem("bookInfo");
-  if(storedBookDataInStorage) {
-    // means there is some data present in the local storage
-    // so first of all parse it from the string
-    inputFieldsArr = JSON.parse(storedBookDataInStorage);
-    console.log(inputFieldsArr);
-    // so we'll apply the filter method to delete the specific object
-    const inputFieldsArrFiltered = inputFieldsArr.filter((element, index, arr) => {
-      if(index != 1) {
-        // delete that specific index
-        inputFieldsArr.splice(index, 1);
+
+  // so we'll apply the filter method to delete the specific object
+  const inputFieldsArrFiltered = inputFieldsArr.filter(
+    (element, index, arr) => {
+      // you have to write the correct condition
+      if (tr.children[0].innerText === element.sno) {
+        // remove it from the localstorage as well
+        return inputFieldsArr.splice(index, 1);
+        // console.log(inputFieldsArr);
+        // return inputFieldsArr;
       }
-    })
-    console.log(inputFieldsArrFiltered);
-  } else {
-    console.log('books data not found in the local storage');
-  }
+      // console.log(tr.children[0].innerText);
+      // console.log(element.sno);
+    }
+  );
+  // console.log(inputFieldsArrFiltered);
+  // console.log(inputFieldsArr);
+  localStorage.setItem("bookInfo", JSON.stringify(inputFieldsArr));
+  // resetting the count variable
+  count = inputFieldsArr.length + 1;
+  // count = (inputFieldsArr + 1);
+  // console.log(count);
+  // if(inputFieldsArr.length === 0) {
+  //   // it means all the bookinfo is deleted
+  //   // reset the count
+  //   count = inputFieldsArr.length + 1;
+  // }
 };
 
 const insertTableRow = () => {
   const tableRow = document.createElement("tr");
   // creating the cells
+  const c0 = document.createElement("td");
   const c1 = document.createElement("td");
   const c2 = document.createElement("td");
   const c3 = document.createElement("td");
@@ -93,13 +157,19 @@ const insertTableRow = () => {
   const deleteBtn = document.createElement("button");
   deleteBtn.innerText = "delete";
   deleteBtn.setAttribute("class", "btn btn-danger");
-  console.dir(deleteBtn);
+  // console.dir(deleteBtn);
   c6.appendChild(deleteBtn);
-  deleteBtn.addEventListener("click", (e) => {
-    // calling the deleteRow function
-    deleteRow(deleteBtn);
-  });
 
+  const storedBookDataInStorage = localStorage.getItem("bookInfo");
+  if (storedBookDataInStorage) {
+    inputFieldsArr = JSON.parse(storedBookDataInStorage);
+    console.log(inputFieldsArr);
+  }
+  deleteBtn.addEventListener("click", (e) => {
+    // console.log("delete btn pressed");
+    // calling the deleteRow function
+    deleteRow(deleteBtn, inputFieldsArr);
+  });
   // creating an image element as well
   const image = document.createElement("img");
   // first of all we check that which radio button was checked by the user
@@ -118,6 +188,7 @@ const insertTableRow = () => {
   // but if user selects any image then we 'll simply update the src of the image with the src of the image of the user
 
   // inserting data into the cells
+  c0.innerText = count;
   c1.innerText = nameInput.value;
   c2.innerText = author.value;
   c3.innerText = description.value;
@@ -139,6 +210,7 @@ const insertTableRow = () => {
     c5.appendChild(image);
   }
   // Append cells to row
+  tableRow.appendChild(c0);
   tableRow.appendChild(c1);
   tableRow.appendChild(c2);
   tableRow.appendChild(c3);
@@ -151,20 +223,20 @@ const insertTableRow = () => {
 
   // ok after inserting the data we have to insert that data in the local storage as well
 
-  
-
   const inputFieldsObj = {
+    sno: `${count}`,
     name: `${nameInput.value}`,
     author: `${author.value}`,
     description: `${description.value}`,
     type: `${c4.innerText}`,
     image: `${image.src}`,
   };
-  console.log(inputFieldsObj);
+  count++;
+  // console.log(inputFieldsObj);
   // after we have got the object of inputFields filled up by the user, in those input fields user has basically fillled by their favourite book description
   // so now it is time to push that object into our inputFieldsArr
   inputFieldsArr.push(inputFieldsObj);
-  console.log(inputFieldsArr);
+  // console.log(inputFieldsArr);
   // now we have to set this inputFieldsArr in our local storage as well
   // but for setting in local storage we have to stringify the inputFieldsArr
   localStorage.setItem("bookInfo", JSON.stringify(inputFieldsArr));
@@ -175,7 +247,7 @@ const insertTableRow = () => {
 };
 
 addBook.addEventListener("click", (e) => {
-  console.log("add-book btn pressed");
+  // console.log("add-book btn pressed");
   // now at first we check that weather user has filled all the input fields or not
   // calling check function
   // const myInputFields = Array.from(allInputFields);
@@ -197,15 +269,6 @@ addBook.addEventListener("click", (e) => {
 
   if (flag) insertTableRow();
 });
-
-// let us build the delete function for deleting bookts
-// if (deleteBtn) {
-//   deleteBtn.addEventListener("click", (e) => {
-//     console.log("delete button pressed");
-//   });
-// }
-
-// now finally the time has come to implement the local storage
 
 function main() {
   const fileUploadElement = document.getElementById("fileUpload");
