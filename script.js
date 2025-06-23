@@ -134,14 +134,14 @@ const deleteRow = (deleteBtn, inputFieldsArr) => {
   // console.log(inputFieldsArr);
   localStorage.setItem("bookInfo", JSON.stringify(inputFieldsArr));
   // resetting the count variable
-  count = inputFieldsArr.length + 1;
+  // count = inputFieldsArr.length + 1;
   // count = (inputFieldsArr + 1);
   // console.log(count);
-  // if(inputFieldsArr.length === 0) {
-  //   // it means all the bookinfo is deleted
-  //   // reset the count
-  //   count = inputFieldsArr.length + 1;
-  // }
+  if(inputFieldsArr.length === 0) {
+    // it means all the bookinfo is deleted
+    // reset the count
+    count = inputFieldsArr.length + 1;
+  }
 };
 
 const insertTableRow = () => {
